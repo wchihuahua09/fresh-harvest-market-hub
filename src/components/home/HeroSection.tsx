@@ -1,17 +1,10 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-
 const HeroSection = () => {
-  return (
-    <section className="relative bg-farm-green text-white">
+  return <section className="relative bg-farm-green text-white">
       <div className="absolute inset-0 overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1499529112087-3cb3b73cec95?w=1600&auto=format&fit=crop"
-          alt="农贸市场"
-          className="w-full h-full object-cover opacity-20"
-        />
+        <img src="https://images.unsplash.com/photo-1499529112087-3cb3b73cec95?w=1600&auto=format&fit=crop" alt="农贸市场" className="w-full h-full object-cover opacity-20" />
       </div>
       
       <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
@@ -29,15 +22,11 @@ const HeroSection = () => {
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-              <Link to="/about">
-                了解更多
-              </Link>
+              
             </Button>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
