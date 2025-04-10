@@ -16,6 +16,8 @@ import { NewsList, NewsDetail } from "./pages/News";
 import Admin from "./pages/Admin";
 import ShopDashboard from "./pages/ShopDashboard";
 import Cart from "./pages/Cart";
+import Orders from "./pages/Orders";
+import CustomerService from "./pages/CustomerService";
 import Favorites from "./pages/Favorites";
 import About from "./pages/About";
 import Farmers from "./pages/Farmers";
@@ -49,6 +51,8 @@ const App = () => (
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
                   <Route path="/cart" element={<Cart />} />
+                  <Route path="/orders" element={<Orders />} />
+                  <Route path="/customer-service" element={<CustomerService />} />
                   <Route path="/favorites" element={<Favorites />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/farmers" element={<Farmers />} />

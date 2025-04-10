@@ -10,7 +10,8 @@ import {
   Users,
   BarChart,
   Star,
-  Map
+  Map,
+  FileText
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProductManagement from "@/components/shop/ProductManagement";
@@ -62,7 +63,7 @@ const ShopDashboard = () => {
               <span>产品管理</span>
             </TabsTrigger>
             <TabsTrigger value="orders" className="flex items-center justify-center">
-              <ShoppingBag className="h-4 w-4 mr-2" />
+              <FileText className="h-4 w-4 mr-2" />
               <span>订单管理</span>
             </TabsTrigger>
             <TabsTrigger value="customers" className="flex items-center justify-center">

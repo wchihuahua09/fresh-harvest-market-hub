@@ -1,9 +1,9 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
-import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag } from "lucide-react";
+import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag, MessageCircle } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -13,10 +13,54 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const checkoutFormSchema = z.object({
+  fullName: z.string().min(2, { message: "姓名不能少于2个字符" }),
+  address: z.string().min(5, { message: "请输入完整的收货地址" }),
+  phone: z.string().min(11, { message: "请输入有效的手机号码" }),
+  notes: z.string().optional(),
+});
+
+type CheckoutFormValues = z.infer<typeof checkoutFormSchema>;
 
 const Cart = () => {
+  const navigate = useNavigate();
   const { cartItems, updateQuantity, removeFromCart, clearCart, getCartTotal } = useCart();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [showCheckoutForm, setShowCheckoutForm] = useState(false);
+  const [showOrderConfirmation, setShowOrderConfirmation] = useState(false);
+  const [orderId, setOrderId] = useState("");
+
+  const form = useForm<CheckoutFormValues>({
+    resolver: zodResolver(checkoutFormSchema),
+    defaultValues: {
+      fullName: "",
+      address: "",
+      phone: "",
+      notes: "",
+    },
+  });
 
   const handleUpdateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
@@ -32,16 +76,32 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
+    setShowCheckoutForm(true);
+  };
+
+  const onSubmitCheckout = (data: CheckoutFormValues) => {
     setIsCheckingOut(true);
-    // Simulate checkout process
+    // Generate an order ID based on timestamp and random string
+    const randomId = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const newOrderId = `ORD-${Date.now().toString().substring(6)}-${randomId}`;
+    setOrderId(newOrderId);
+    
+    // Simulate order processing
     setTimeout(() => {
-      clearCart();
+      setShowCheckoutForm(false);
       setIsCheckingOut(false);
-      toast({
-        title: "订单已提交",
-        description: "您的订单已成功提交，我们将尽快安排发货",
-      });
+      setShowOrderConfirmation(true);
     }, 1500);
+  };
+
+  const handleCompleteOrder = () => {
+    clearCart();
+    setShowOrderConfirmation(false);
+    toast({
+      title: "订单已提交",
+      description: "您的订单已成功提交，我们将尽快安排发货",
+    });
+    navigate("/orders");
   };
 
   return (
@@ -52,6 +112,12 @@ const Cart = () => {
           继续购物
         </Link>
         <h1 className="text-2xl font-bold text-farm-brown">购物车</h1>
+        <Button variant="outline" className="ml-auto" asChild>
+          <Link to="/customer-service" className="flex items-center">
+            <MessageCircle className="h-4 w-4 mr-2" />
+            联系客服
+          </Link>
+        </Button>
       </div>
 
       {cartItems.length === 0 ? (
@@ -173,6 +239,106 @@ const Cart = () => {
           </div>
         </>
       )}
+
+      {/* 结算表单对话框 */}
+      <Dialog open={showCheckoutForm} onOpenChange={setShowCheckoutForm}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>填写收货信息</DialogTitle>
+            <DialogDescription>
+              请填写您的收货地址和联系信息，以便我们及时送达您的订单。
+            </DialogDescription>
+          </DialogHeader>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmitCheckout)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="fullName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>姓名</FormLabel>
+                    <FormControl>
+                      <Input placeholder="请输入您的姓名" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>收货地址</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="请输入详细的收货地址" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>手机号码</FormLabel>
+                    <FormControl>
+                      <Input placeholder="请输入您的手机号码" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="notes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>订单备注（可选）</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="如有特殊要求，请在此备注" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <DialogFooter className="mt-6">
+                <Button type="button" variant="outline" onClick={() => setShowCheckoutForm(false)}>取消</Button>
+                <Button type="submit" disabled={isCheckingOut}>
+                  {isCheckingOut ? "处理中..." : "提交订单"}
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+
+      {/* 订单确认对话框 */}
+      <Dialog open={showOrderConfirmation} onOpenChange={setShowOrderConfirmation}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>订单已生成</DialogTitle>
+            <DialogDescription>
+              您的订单已成功生成，请记录您的订单号。
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <div className="mb-4 p-4 bg-gray-50 rounded-md border text-center">
+              <p className="text-sm text-gray-500">订单号</p>
+              <p className="text-xl font-bold">{orderId}</p>
+            </div>
+            <p className="text-sm text-gray-500 mb-4">
+              您可以在"我的订单"中查看订单状态和详情。商家确认订单后，将通知您支付。
+            </p>
+          </div>
+          <DialogFooter>
+            <Button onClick={handleCompleteOrder} className="w-full">
+              确认并查看我的订单
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
