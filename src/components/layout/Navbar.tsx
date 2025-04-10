@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Search, Menu, X, User, Heart } from "lucide-react";
@@ -14,42 +13,39 @@ const Navbar = () => {
   };
 
   const categories = [
-    { name: "Vegetables", path: "/category/vegetables" },
-    { name: "Fruits", path: "/category/fruits" },
-    { name: "Dairy", path: "/category/dairy" },
-    { name: "Grains", path: "/category/grains" },
-    { name: "Herbs", path: "/category/herbs" },
+    { name: "蔬菜", path: "/category/vegetables" },
+    { name: "水果", path: "/category/fruits" },
+    { name: "乳制品", path: "/category/dairy" },
+    { name: "谷物", path: "/category/grains" },
+    { name: "草药", path: "/category/herbs" },
   ];
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-farm-green font-bold text-2xl">FreshHarvest</span>
+            <span className="text-farm-green font-bold text-2xl">新鲜收获</span>
           </Link>
 
-          {/* Search - hidden on mobile */}
           <div className="hidden md:flex items-center space-x-1 relative flex-1 mx-10 max-w-lg">
             <Input
               type="text"
-              placeholder="Search for products..."
+              placeholder="搜索农产品..."
               className="pl-10 bg-farm-cream-light"
             />
             <Search className="absolute left-3 text-gray-400" size={18} />
           </div>
 
-          {/* Nav Links - Desktop */}
           <div className="hidden md:flex items-center space-x-6">
             <Link to="/products" className="text-gray-700 hover:text-farm-green">
-              Products
+              产品
             </Link>
             <Link to="/about" className="text-gray-700 hover:text-farm-green">
-              About
+              关于
             </Link>
             <Link to="/contact" className="text-gray-700 hover:text-farm-green">
-              Contact
+              联系
             </Link>
             <Link to="/favorites" className="text-gray-700 hover:text-farm-green">
               <Heart size={20} />
@@ -67,7 +63,6 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center space-x-4">
             <Link to="/cart" className="relative">
               <ShoppingCart size={20} className="text-farm-green" />
@@ -84,7 +79,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Categories bar */}
       <div className="bg-farm-cream border-t border-b border-gray-200">
         <div className="container mx-auto px-4">
           <div className="hidden md:flex justify-between items-center">
@@ -101,7 +95,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="fixed inset-0 z-50 bg-white md:hidden">
           <div className="flex justify-end p-4">
@@ -113,7 +106,7 @@ const Navbar = () => {
             <div className="mb-6">
               <Input
                 type="text"
-                placeholder="Search for products..."
+                placeholder="搜索农产品..."
                 className="pl-10 bg-farm-cream-light"
               />
               <Search className="absolute top-24 left-7 text-gray-400" size={18} />
@@ -124,7 +117,7 @@ const Navbar = () => {
                 className="block py-2 text-lg font-medium"
                 onClick={toggleMenu}
               >
-                Products
+                产品
               </Link>
               <div className="pl-4 space-y-2">
                 {categories.map((category) => (
@@ -143,28 +136,28 @@ const Navbar = () => {
                 className="block py-2 text-lg font-medium"
                 onClick={toggleMenu}
               >
-                About
+                关于
               </Link>
               <Link
                 to="/contact"
                 className="block py-2 text-lg font-medium"
                 onClick={toggleMenu}
               >
-                Contact
+                联系
               </Link>
               <Link
                 to="/account"
                 className="block py-2 text-lg font-medium"
                 onClick={toggleMenu}
               >
-                Account
+                账户
               </Link>
               <Link
                 to="/favorites"
                 className="block py-2 text-lg font-medium"
                 onClick={toggleMenu}
               >
-                Favorites
+                收藏
               </Link>
             </div>
           </div>

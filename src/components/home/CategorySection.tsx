@@ -1,32 +1,31 @@
-
 import { Link } from "react-router-dom";
 
 const categories = [
   {
     id: 1,
-    name: "Vegetables",
-    description: "Fresh, seasonal vegetables",
+    name: "蔬菜",
+    description: "新鲜应季蔬菜",
     image: "https://images.unsplash.com/photo-1467019972079-a273e1bc9173?w=800&auto=format&fit=crop",
     path: "/category/vegetables",
   },
   {
     id: 2,
-    name: "Fruits",
-    description: "Juicy, ripe fruits",
+    name: "水果",
+    description: "甜美多汁的水果",
     image: "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=800&auto=format&fit=crop",
     path: "/category/fruits",
   },
   {
     id: 3,
-    name: "Dairy",
-    description: "Farm-fresh dairy products",
+    name: "乳制品",
+    description: "新鲜农场乳制品",
     image: "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=800&auto=format&fit=crop",
     path: "/category/dairy",
   },
   {
     id: 4,
-    name: "Grains",
-    description: "Organic grains and legumes",
+    name: "谷物",
+    description: "有机谷物和豆类",
     image: "https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=800&auto=format&fit=crop",
     path: "/category/grains",
   },
@@ -37,7 +36,7 @@ const CategorySection = () => {
     <section className="py-12">
       <div className="container mx-auto px-4">
         <h2 className="text-2xl md:text-3xl font-bold text-farm-brown text-center mb-8">
-          Shop By Category
+          按分类购买
         </h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

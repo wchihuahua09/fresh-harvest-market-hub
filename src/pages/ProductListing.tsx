@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ProductCard from "@/components/products/ProductCard";
@@ -184,12 +183,12 @@ const ProductListing = () => {
   const [showFilters, setShowFilters] = useState(false);
   
   const categories = [
-    { id: "vegetables", name: "Vegetables" },
-    { id: "fruits", name: "Fruits" },
-    { id: "dairy", name: "Dairy" },
-    { id: "grains", name: "Grains" },
-    { id: "herbs", name: "Herbs" },
-    { id: "other", name: "Other" },
+    { id: "vegetables", name: "蔬菜" },
+    { id: "fruits", name: "水果" },
+    { id: "dairy", name: "乳制品" },
+    { id: "grains", name: "谷物" },
+    { id: "herbs", name: "草药" },
+    { id: "other", name: "其他" },
   ];
 
   // Filter products
@@ -223,10 +222,12 @@ const ProductListing = () => {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl md:text-3xl font-bold text-farm-brown mb-8">
         {selectedCategory 
-          ? `${categories.find(c => c.id === selectedCategory)?.name || 'Products'}`
-          : "All Products"}
+          ? `${categories.find(c => c.id === selectedCategory)?.name || '产品'}`
+          : "所有产品"}
       </h1>
       
+      {/* 保持现有结构和布局不变 */}
+      {/* 只更新文本内容 */}
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Mobile Filters Toggle */}
         <div className="lg:hidden mb-4">
@@ -237,27 +238,28 @@ const ProductListing = () => {
           >
             <div className="flex items-center">
               <SlidersHorizontal size={18} className="mr-2" />
-              Filters
+              筛选
             </div>
             {showFilters ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
           </Button>
         </div>
         
-        {/* Filters Sidebar - Desktop always visible, mobile toggleable */}
+        {/* Filters Sidebar */}
         <div className={`lg:w-1/4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
           <div className="bg-white rounded-lg shadow p-6">
             <div className="mb-6">
-              <h3 className="font-medium text-lg mb-3">Search</h3>
+              <h3 className="font-medium text-lg mb-3">搜索</h3>
               <Input
                 type="text"
-                placeholder="Search products..."
+                placeholder="搜索产品..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             
+            {/* 其他部分保持不变，只更新文本 */}
             <div className="mb-6">
-              <h3 className="font-medium text-lg mb-3">Categories</h3>
+              <h3 className="font-medium text-lg mb-3">分类</h3>
               <div className="space-y-2">
                 {categories.map((category) => (
                   <div key={category.id} className="flex items-center">
@@ -280,7 +282,7 @@ const ProductListing = () => {
             </div>
             
             <div className="mb-6">
-              <h3 className="font-medium text-lg mb-3">Price Range</h3>
+              <h3 className="font-medium text-lg mb-3">价格范围</h3>
               <Slider
                 defaultValue={[0, 10]}
                 max={10}
@@ -306,7 +308,7 @@ const ProductListing = () => {
                   htmlFor="organic-only"
                   className="ml-2 text-gray-700 cursor-pointer"
                 >
-                  Organic Only
+                  仅有机
                 </Label>
               </div>
             </div>
@@ -316,7 +318,7 @@ const ProductListing = () => {
               className="w-full"
               onClick={clearFilters}
             >
-              Clear Filters
+              清除筛选
             </Button>
           </div>
         </div>
@@ -331,8 +333,8 @@ const ProductListing = () => {
             </div>
           ) : (
             <div className="text-center py-12">
-              <h3 className="text-xl font-medium mb-2">No products found</h3>
-              <p className="text-gray-600">Try adjusting your filters</p>
+              <h3 className="text-xl font-medium mb-2">未找到产品</h3>
+              <p className="text-gray-600">请调整您的筛选条件</p>
             </div>
           )}
         </div>
