@@ -1,9 +1,11 @@
-
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { FileText as FileTextIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/hooks/use-toast";
+
 import {
   Card,
   CardContent,
@@ -12,12 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
 import {
   Accordion,
   AccordionContent,
@@ -108,7 +104,7 @@ const faqs = [
       },
       {
         question: "退款会多久到账？",
-        answer: "退货申请审核通过后，我们将在收到退回商品并确认无误后的1-7个工作日内处理退款。具体到账时间依据支付平台而定，一般为1-5个工作日。",
+        answer: "退货申请审核通过后，我们将在收到退回商品并确认无误后的1-7个工作日内处理退款。具体到账时���依据支付平台而定，一般为1-5个工作日。",
       },
     ],
   },
@@ -370,7 +366,7 @@ const CustomerService = () => {
                             <FormLabel>留言内容</FormLabel>
                             <FormControl>
                               <Textarea 
-                                placeholder="请详细描述您的问题或建议..." 
+                                placeholder="请详���描述您的问题或建议..." 
                                 className="min-h-[120px]"
                                 {...field} 
                               />
@@ -420,7 +416,7 @@ const CustomerService = () => {
             <CardContent className="grid grid-cols-2 gap-3">
               <Button variant="outline" className="flex items-center justify-start h-auto py-3" asChild>
                 <Link to="/orders">
-                  <FileText className="h-4 w-4 mr-2 text-farm-green" />
+                  <FileTextIcon className="h-4 w-4 mr-2 text-farm-green" />
                   <span>我的订单</span>
                 </Link>
               </Button>

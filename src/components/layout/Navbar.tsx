@@ -13,7 +13,8 @@ import {
   Shield, 
   Store,
   Newspaper,
-  Home
+  Home,
+  Package
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -84,6 +85,9 @@ const Navbar = () => {
             </Link>
             <Link to="/news" className="text-gray-700 hover:text-farm-green flex items-center">
               <Newspaper size={20} className="mr-1" /> 资讯
+            </Link>
+            <Link to="/orders" className="text-gray-700 hover:text-farm-green flex items-center">
+              <Package size={20} className="mr-1" /> 订单
             </Link>
             <Link to="/favorites" className="text-gray-700 hover:text-farm-green">
               <Heart size={20} />
@@ -198,6 +202,13 @@ const Navbar = () => {
                 onClick={toggleMenu}
               >
                 <Newspaper size={18} className="mr-2" /> 资讯
+              </Link>
+              <Link
+                to="/orders"
+                className="block py-2 text-lg font-medium flex items-center"
+                onClick={toggleMenu}
+              >
+                <Package size={18} className="mr-2" /> 订单
               </Link>
               
               {isAuthenticated ? (
