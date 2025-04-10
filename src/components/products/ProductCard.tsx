@@ -111,7 +111,13 @@ const ProductCard = ({
           <div className="flex justify-between items-start flex-grow">
             <div>
               <h3 className="font-medium text-lg text-gray-800">{name}</h3>
-              <p className="text-sm text-gray-500">{farmer.name} • {farmer.location}</p>
+              <Link 
+                to={farmer.id ? `/shop/${farmer.id}` : "#"} 
+                className="text-sm text-gray-500 hover:text-farm-green hover:underline"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {farmer.name} • {farmer.location}
+              </Link>
             </div>
             <div className="text-farm-green font-bold text-lg">¥{price.toFixed(2)}<span className="text-xs text-gray-500">/{unit}</span></div>
           </div>
