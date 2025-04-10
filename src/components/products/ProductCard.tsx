@@ -112,7 +112,7 @@ const ProductCard = ({
             <div>
               <h3 className="font-medium text-lg text-gray-800">{name}</h3>
               <Link 
-                to={farmer.id ? `/shop/${farmer.id}` : "#"} 
+                to={farmer.id ? `/farmer/${farmer.id}` : "#"} 
                 className="text-sm text-gray-500 hover:text-farm-green hover:underline"
                 onClick={(e) => e.stopPropagation()}
               >
