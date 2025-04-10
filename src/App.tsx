@@ -17,6 +17,8 @@ import Admin from "./pages/Admin";
 import ShopDashboard from "./pages/ShopDashboard";
 import Cart from "./pages/Cart";
 import Favorites from "./pages/Favorites";
+import About from "./pages/About";
+import Farmers from "./pages/Farmers";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -48,6 +50,8 @@ const App = () => (
                   <Route path="/register" element={<Register />} />
                   <Route path="/cart" element={<Cart />} />
                   <Route path="/favorites" element={<Favorites />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/farmers" element={<Farmers />} />
                   <Route 
                     path="/profile" 
                     element={

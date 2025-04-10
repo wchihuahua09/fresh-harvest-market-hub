@@ -46,8 +46,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-gray-200 hover:text-white">
-                  联系我们
+                <Link to="/news" className="text-gray-200 hover:text-white">
+                  新闻资讯
                 </Link>
               </li>
             </ul>
