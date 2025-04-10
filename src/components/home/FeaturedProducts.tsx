@@ -8,78 +8,78 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 const featuredProducts = [
   {
     id: 1,
-    name: "Organic Carrots",
+    name: "有机胡萝卜",
     image: "https://images.unsplash.com/photo-1447175008436-054170c2e979?w=800&auto=format&fit=crop",
-    price: 2.99,
-    unit: "bunch",
+    price: 9.9,
+    unit: "束",
     isOrganic: true,
     isFeatured: true,
     farmer: {
-      name: "Green Valley Farm",
-      location: "Riverside",
+      name: "绿谷农场",
+      location: "河滨区",
     },
   },
   {
     id: 2,
-    name: "Fresh Strawberries",
+    name: "新鲜草莓",
     image: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=800&auto=format&fit=crop",
-    price: 4.99,
-    unit: "basket",
+    price: 18.8,
+    unit: "篮",
     isOrganic: true,
     isFeatured: true,
     farmer: {
-      name: "Berry Hills",
-      location: "Mountain View",
+      name: "莓山农场",
+      location: "山景区",
     },
   },
   {
     id: 3,
-    name: "Farm Eggs",
+    name: "农场鸡蛋",
     image: "https://images.unsplash.com/photo-1489761486274-a2c9a6592b04?w=800&auto=format&fit=crop",
-    price: 5.99,
-    unit: "dozen",
+    price: 25.9,
+    unit: "打",
     isFeatured: true,
     farmer: {
-      name: "Happy Hens",
-      location: "Greenfield",
+      name: "欢乐母鸡",
+      location: "绿野区",
     },
   },
   {
     id: 4,
-    name: "Fresh Basil",
+    name: "新鲜罗勒",
     image: "https://images.unsplash.com/photo-1600326145552-327c4df2c246?w=800&auto=format&fit=crop",
-    price: 2.49,
-    unit: "bunch",
+    price: 7.5,
+    unit: "束",
     isOrganic: true,
     isFeatured: true,
     farmer: {
-      name: "Herb Haven",
-      location: "Meadowville",
+      name: "香草天堂",
+      location: "草地镇",
     },
   },
   {
     id: 5,
-    name: "Grass-fed Milk",
+    name: "草饲牛奶",
     image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=800&auto=format&fit=crop",
-    price: 4.29,
-    unit: "quart",
+    price: 15.9,
+    unit: "升",
     isFeatured: true,
     farmer: {
-      name: "Dairy Meadows",
-      location: "Creamfield",
+      name: "奶牛牧场",
+      location: "奶源地",
     },
   },
   {
     id: 6,
-    name: "Honey",
+    name: "纯天然蜂蜜",
     image: "https://images.unsplash.com/photo-1587049352851-8d4e89133924?w=800&auto=format&fit=crop",
-    price: 8.99,
-    unit: "jar",
+    price: 45.8,
+    unit: "瓶",
     isOrganic: true,
     isFeatured: true,
     farmer: {
-      name: "Bee Happy",
-      location: "Flowerdale",
+      name: "蜜蜂之家",
+      location: "花海镇",
     },
   },
 ];
@@ -115,7 +115,7 @@ const FeaturedProducts = () => {
     <section className="py-12 bg-farm-cream-light">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-farm-brown">Featured Products</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-farm-brown">推荐产品</h2>
           <div className="flex gap-2">
             <Button
               onClick={() => scroll('left')}
@@ -145,7 +145,7 @@ const FeaturedProducts = () => {
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {featuredProducts.map((product) => (
-              <div key={product.id} className="min-w-[280px] max-w-[280px]">
+              <div key={product.id} className="min-w-[280px] max-w-[280px] h-full">
                 <ProductCard {...product} />
               </div>
             ))}

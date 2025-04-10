@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ProductCard from "@/components/products/ProductCard";
@@ -12,158 +13,158 @@ import { SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react";
 const allProducts = [
   {
     id: 1,
-    name: "Organic Carrots",
+    name: "有机胡萝卜",
     image: "https://images.unsplash.com/photo-1447175008436-054170c2e979?w=800&auto=format&fit=crop",
-    price: 2.99,
-    unit: "bunch",
+    price: 9.9,
+    unit: "束",
     isOrganic: true,
     category: "vegetables",
     farmer: {
-      name: "Green Valley Farm",
-      location: "Riverside",
+      name: "绿谷农场",
+      location: "河滨区",
     },
   },
   {
     id: 2,
-    name: "Fresh Strawberries",
+    name: "新鲜草莓",
     image: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=800&auto=format&fit=crop",
-    price: 4.99,
-    unit: "basket",
+    price: 18.8,
+    unit: "篮",
     isOrganic: true,
     category: "fruits",
     farmer: {
-      name: "Berry Hills",
-      location: "Mountain View",
+      name: "莓山农场",
+      location: "山景区",
     },
   },
   {
     id: 3,
-    name: "Farm Eggs",
+    name: "农场鸡蛋",
     image: "https://images.unsplash.com/photo-1489761486274-a2c9a6592b04?w=800&auto=format&fit=crop",
-    price: 5.99,
-    unit: "dozen",
+    price: 25.9,
+    unit: "打",
     isOrganic: false,
     category: "dairy",
     farmer: {
-      name: "Happy Hens",
-      location: "Greenfield",
+      name: "欢乐母鸡",
+      location: "绿野区",
     },
   },
   {
     id: 4,
-    name: "Fresh Basil",
+    name: "新鲜罗勒",
     image: "https://images.unsplash.com/photo-1600326145552-327c4df2c246?w=800&auto=format&fit=crop",
-    price: 2.49,
-    unit: "bunch",
+    price: 7.5,
+    unit: "束",
     isOrganic: true,
     category: "herbs",
     farmer: {
-      name: "Herb Haven",
-      location: "Meadowville",
+      name: "香草天堂",
+      location: "草地镇",
     },
   },
   {
     id: 5,
-    name: "Grass-fed Milk",
+    name: "草饲牛奶",
     image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=800&auto=format&fit=crop",
-    price: 4.29,
-    unit: "quart",
+    price: 15.9,
+    unit: "升",
     isOrganic: false,
     category: "dairy",
     farmer: {
-      name: "Dairy Meadows",
-      location: "Creamfield",
+      name: "奶牛牧场",
+      location: "奶源地",
     },
   },
   {
     id: 6,
-    name: "Honey",
+    name: "纯天然蜂蜜",
     image: "https://images.unsplash.com/photo-1587049352851-8d4e89133924?w=800&auto=format&fit=crop",
-    price: 8.99,
-    unit: "jar",
+    price: 45.8,
+    unit: "瓶",
     isOrganic: true,
     category: "other",
     farmer: {
-      name: "Bee Happy",
-      location: "Flowerdale",
+      name: "蜜蜂之家",
+      location: "花海镇",
     },
   },
   {
     id: 7,
-    name: "Organic Apples",
+    name: "有机苹果",
     image: "https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?w=800&auto=format&fit=crop",
-    price: 3.49,
-    unit: "lb",
+    price: 12.8,
+    unit: "斤",
     isOrganic: true,
     category: "fruits",
     farmer: {
-      name: "Orchard Valley",
-      location: "Applewood",
+      name: "果园谷",
+      location: "苹果镇",
     },
   },
   {
     id: 8,
-    name: "Fresh Broccoli",
+    name: "新鲜西兰花",
     image: "https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=800&auto=format&fit=crop",
-    price: 2.79,
-    unit: "head",
+    price: 8.9,
+    unit: "棵",
     isOrganic: false,
     category: "vegetables",
     farmer: {
-      name: "Green Fields",
-      location: "Riverside",
+      name: "绿野农场",
+      location: "河滨区",
     },
   },
   {
     id: 9,
-    name: "Artisan Cheese",
+    name: "手工奶酪",
     image: "https://images.unsplash.com/photo-1452195100486-9cc805987862?w=800&auto=format&fit=crop",
-    price: 7.99,
-    unit: "8oz",
+    price: 38.0,
+    unit: "块",
     isOrganic: false,
     category: "dairy",
     farmer: {
-      name: "Cheese Craft",
-      location: "Creamfield",
+      name: "奶酪工坊",
+      location: "奶源地",
     },
   },
   {
     id: 10,
-    name: "Organic Quinoa",
+    name: "有机藜麦",
     image: "https://images.unsplash.com/photo-1542550371427-311e1b0427cc?w=800&auto=format&fit=crop",
-    price: 6.49,
-    unit: "lb",
+    price: 25.9,
+    unit: "斤",
     isOrganic: true,
     category: "grains",
     farmer: {
-      name: "Heritage Acres",
-      location: "Mountainside",
+      name: "传承农场",
+      location: "山区",
     },
   },
   {
     id: 11,
-    name: "Fresh Tomatoes",
+    name: "新鲜番茄",
     image: "https://images.unsplash.com/photo-1594057687713-5fd14eed1c17?w=800&auto=format&fit=crop",
-    price: 3.99,
-    unit: "lb",
+    price: 9.9,
+    unit: "斤",
     isOrganic: true,
     category: "vegetables",
     farmer: {
-      name: "Sunny Fields",
-      location: "Valley View",
+      name: "阳光农场",
+      location: "谷景区",
     },
   },
   {
     id: 12,
-    name: "Wild Blueberries",
+    name: "野生蓝莓",
     image: "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?w=800&auto=format&fit=crop",
-    price: 5.99,
-    unit: "pint",
+    price: 32.8,
+    unit: "盒",
     isOrganic: true,
     category: "fruits",
     farmer: {
-      name: "Berry Hills",
-      location: "Mountain View",
+      name: "莓山农场",
+      location: "山景区",
     },
   },
 ];
@@ -177,7 +178,7 @@ const ProductListing = () => {
     : '';
   
   const [searchTerm, setSearchTerm] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 10]);
+  const [priceRange, setPriceRange] = useState([0, 50]);
   const [organicOnly, setOrganicOnly] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(categoryFromURL || "");
   const [showFilters, setShowFilters] = useState(false);
@@ -212,7 +213,7 @@ const ProductListing = () => {
 
   const clearFilters = () => {
     setSearchTerm("");
-    setPriceRange([0, 10]);
+    setPriceRange([0, 50]);
     setOrganicOnly(false);
     setSelectedCategory("");
     navigate('/products');
@@ -226,8 +227,6 @@ const ProductListing = () => {
           : "所有产品"}
       </h1>
       
-      {/* 保持现有结构和布局不变 */}
-      {/* 只更新文本内容 */}
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Mobile Filters Toggle */}
         <div className="lg:hidden mb-4">
@@ -257,7 +256,6 @@ const ProductListing = () => {
               />
             </div>
             
-            {/* 其他部分保持不变，只更新文本 */}
             <div className="mb-6">
               <h3 className="font-medium text-lg mb-3">分类</h3>
               <div className="space-y-2">
@@ -284,16 +282,16 @@ const ProductListing = () => {
             <div className="mb-6">
               <h3 className="font-medium text-lg mb-3">价格范围</h3>
               <Slider
-                defaultValue={[0, 10]}
-                max={10}
-                step={0.5}
+                defaultValue={[0, 50]}
+                max={50}
+                step={1}
                 value={priceRange}
                 onValueChange={setPriceRange}
                 className="my-6"
               />
               <div className="flex justify-between text-sm">
-                <span>${priceRange[0].toFixed(2)}</span>
-                <span>${priceRange[1].toFixed(2)}</span>
+                <span>¥{priceRange[0].toFixed(2)}</span>
+                <span>¥{priceRange[1].toFixed(2)}</span>
               </div>
             </div>
             
@@ -328,7 +326,9 @@ const ProductListing = () => {
           {filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
-                <ProductCard key={product.id} {...product} />
+                <div key={product.id} className="h-full">
+                  <ProductCard {...product} />
+                </div>
               ))}
             </div>
           ) : (

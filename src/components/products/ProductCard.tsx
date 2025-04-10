@@ -77,8 +77,8 @@ const ProductCard = ({
   };
 
   return (
-    <div className="farm-card group">
-      <Link to={`/product/${id}`} className="block">
+    <div className="farm-card group h-full">
+      <Link to={`/product/${id}`} className="block h-full flex flex-col">
         <div className="relative overflow-hidden">
           <img
             src={image}
@@ -98,22 +98,22 @@ const ProductCard = ({
           </div>
           {isOrganic && (
             <div className="absolute top-2 left-2">
-              <Badge className="bg-farm-green text-white border-none">Organic</Badge>
+              <Badge className="bg-farm-green text-white border-none">有机</Badge>
             </div>
           )}
           {isFeatured && (
             <div className="absolute bottom-2 right-2">
-              <Badge className="bg-farm-brown text-white border-none">Featured</Badge>
+              <Badge className="bg-farm-brown text-white border-none">推荐</Badge>
             </div>
           )}
         </div>
-        <div className="p-4">
-          <div className="flex justify-between items-start">
+        <div className="p-4 flex-grow flex flex-col">
+          <div className="flex justify-between items-start flex-grow">
             <div>
               <h3 className="font-medium text-lg text-gray-800">{name}</h3>
               <p className="text-sm text-gray-500">{farmer.name} • {farmer.location}</p>
             </div>
-            <div className="text-farm-green font-bold text-lg">${price.toFixed(2)}<span className="text-xs text-gray-500">/{unit}</span></div>
+            <div className="text-farm-green font-bold text-lg">¥{price.toFixed(2)}<span className="text-xs text-gray-500">/{unit}</span></div>
           </div>
           <div className="mt-4">
             <Button
@@ -121,7 +121,7 @@ const ProductCard = ({
               className="w-full bg-farm-green hover:bg-farm-green-dark text-white"
             >
               <ShoppingCart size={16} className="mr-2" />
-              Add to Cart
+              加入购物车
             </Button>
           </div>
         </div>
