@@ -119,7 +119,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return false;
     }
     
-    // 创建新用户
+    // 创建新用户 - 修复：添加缺少的 phone 和 address 字段
     const newUser = {
       id: (users.length + 1).toString(),
       username,
@@ -127,6 +127,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       email,
       role: "user" as UserRole,
       avatar: "/placeholder.svg",
+      phone: "", // 添加空的电话字段
+      address: "", // 添加空的地址字段
     };
     
     // 更新用户列表
