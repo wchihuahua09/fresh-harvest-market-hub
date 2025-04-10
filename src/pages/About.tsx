@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Check, Leaf, Users, Farm, Award } from "lucide-react";
+import { Check, Leaf, Users, Warehouse, Award } from "lucide-react";
 
 const About = () => {
   const values = [
@@ -16,7 +16,7 @@ const About = () => {
       description: "我们相信强大的本地食品系统可以创造繁荣的社区。"
     },
     {
-      icon: <Farm className="h-8 w-8 text-farm-green" />,
+      icon: <Warehouse className="h-8 w-8 text-farm-green" />,
       title: "透明度",
       description: "我们让您了解食物的来源，以及生产食物的人。"
     },
