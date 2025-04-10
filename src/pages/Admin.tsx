@@ -3,11 +3,22 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Shield, Users, Store, Settings, LogOut } from "lucide-react";
+import { 
+  Shield, 
+  Users, 
+  Store, 
+  Settings, 
+  LogOut, 
+  Lock, 
+  FileText,
+  Bell
+} from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UserManagement from "@/components/admin/UserManagement";
 import StoreManagement from "@/components/admin/StoreManagement";
 import SystemSettings from "@/components/admin/SystemSettings";
+import NewsManagement from "@/components/admin/NewsManagement";
+import ChangePassword from "@/components/admin/ChangePassword";
 
 const Admin = () => {
   const { user, logout, hasRole } = useAuth();
@@ -45,7 +56,7 @@ const Admin = () => {
         </div>
         
         <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview" className="flex items-center justify-center">
               <Shield className="h-4 w-4 mr-2" />
               <span>概览</span>
@@ -57,6 +68,14 @@ const Admin = () => {
             <TabsTrigger value="stores" className="flex items-center justify-center">
               <Store className="h-4 w-4 mr-2" />
               <span>商店管理</span>
+            </TabsTrigger>
+            <TabsTrigger value="news" className="flex items-center justify-center">
+              <FileText className="h-4 w-4 mr-2" />
+              <span>资讯管理</span>
+            </TabsTrigger>
+            <TabsTrigger value="password" className="flex items-center justify-center">
+              <Lock className="h-4 w-4 mr-2" />
+              <span>修改密码</span>
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center justify-center">
               <Settings className="h-4 w-4 mr-2" />
@@ -80,10 +99,10 @@ const Admin = () => {
                 <Button className="w-full bg-farm-green hover:bg-farm-green-dark">访问</Button>
               </div>
               
-              <div className="bg-farm-cream p-6 rounded-lg cursor-pointer hover:shadow-md transition-shadow" onClick={() => setActiveTab("settings")}>
-                <Settings className="h-8 w-8 text-farm-green mb-4" />
-                <h2 className="text-xl font-bold mb-2">系统设置</h2>
-                <p className="text-gray-600 mb-4">配置系统参数和全局设置</p>
+              <div className="bg-farm-cream p-6 rounded-lg cursor-pointer hover:shadow-md transition-shadow" onClick={() => setActiveTab("news")}>
+                <FileText className="h-8 w-8 text-farm-green mb-4" />
+                <h2 className="text-xl font-bold mb-2">资讯管理</h2>
+                <p className="text-gray-600 mb-4">管理系统资讯和公告</p>
                 <Button className="w-full bg-farm-green hover:bg-farm-green-dark">访问</Button>
               </div>
             </div>
@@ -111,6 +130,14 @@ const Admin = () => {
           
           <TabsContent value="stores" className="mt-6">
             <StoreManagement />
+          </TabsContent>
+          
+          <TabsContent value="news" className="mt-6">
+            <NewsManagement />
+          </TabsContent>
+          
+          <TabsContent value="password" className="mt-6">
+            <ChangePassword />
           </TabsContent>
           
           <TabsContent value="settings" className="mt-6">
