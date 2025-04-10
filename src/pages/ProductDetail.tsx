@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -70,30 +71,30 @@ const mockReviews = [
   }
 ];
 
-// Sample product data - would come from API in a real app
+// 样本产品数据 - 实际应用中会从API获取
 const productData = {
   id: 1,
-  name: "Organic Carrots",
+  name: "有机胡萝卜",
   image: "https://images.unsplash.com/photo-1447175008436-054170c2e979?w=800&auto=format&fit=crop",
   price: 2.99,
-  unit: "bunch",
-  description: "Sweet, crunchy organic carrots grown without pesticides. Perfect for snacking, cooking, or juicing. Rich in beta-carotene and nutrients.",
+  unit: "捆",
+  description: "甜脆可口的有机胡萝卜，不含农药。非常适合生吃、烹饪或榨汁。富含β-胡萝卜素和多种营养物质。",
   isOrganic: true,
-  category: "vegetables",
+  category: "蔬菜",
   inStock: true,
   farmer: {
     id: 1,
-    name: "Green Valley Farm",
-    location: "Riverside",
+    name: "绿谷农场",
+    location: "河滨区",
     image: "https://images.unsplash.com/photo-1592087046781-466fede8b6f9?w=400&auto=format&fit=crop",
   },
   nutritionFacts: {
-    servingSize: "1 medium carrot (61g)",
+    servingSize: "1个中等大小胡萝卜 (61克)",
     calories: 25,
-    fat: "0.1g",
-    carbs: "6g",
-    protein: "0.6g",
-    fiber: "1.7g",
+    fat: "0.1克",
+    carbs: "6克",
+    protein: "0.6克",
+    fiber: "1.7克",
   },
   rating: {
     average: 4.7,
@@ -102,38 +103,38 @@ const productData = {
   relatedProducts: [
     {
       id: 8,
-      name: "Fresh Broccoli",
+      name: "新鲜西兰花",
       image: "https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=800&auto=format&fit=crop",
       price: 2.79,
-      unit: "head",
+      unit: "头",
       isOrganic: false,
       farmer: {
-        name: "Green Fields",
-        location: "Riverside",
+        name: "绿野农场",
+        location: "河滨区",
       },
     },
     {
       id: 11,
-      name: "Fresh Tomatoes",
+      name: "新鲜番茄",
       image: "https://images.unsplash.com/photo-1594057687713-5fd14eed1c17?w=800&auto=format&fit=crop",
       price: 3.99,
-      unit: "lb",
+      unit: "斤",
       isOrganic: true,
       farmer: {
-        name: "Sunny Fields",
-        location: "Valley View",
+        name: "阳光田园",
+        location: "谷景区",
       },
     },
     {
       id: 4,
-      name: "Fresh Basil",
+      name: "新鲜罗勒",
       image: "https://images.unsplash.com/photo-1600326145552-327c4df2c246?w=800&auto=format&fit=crop",
       price: 2.49,
-      unit: "bunch",
+      unit: "束",
       isOrganic: true,
       farmer: {
-        name: "Herb Haven",
-        location: "Meadowville",
+        name: "香草园",
+        location: "草原镇",
       },
     },
   ]
@@ -196,8 +197,8 @@ const ProductDetail = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // In a real app, you would fetch the product data based on the ID
-  // For now, we'll use the sample data
+  // 实际应用中，您会根据ID获取产品数据
+  // 现在，我们使用样本数据
   const product = productData;
   const favorited = isFavorite(product.id);
   
@@ -324,10 +325,10 @@ const ProductDetail = () => {
   if (!product) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
-        <h2 className="text-2xl font-bold">Product not found</h2>
-        <p className="mt-4">The product you're looking for doesn't exist or has been removed.</p>
+        <h2 className="text-2xl font-bold">产品未找到</h2>
+        <p className="mt-4">您查找的产品不存在或已被移除。</p>
         <Button asChild className="mt-6 bg-farm-green hover:bg-farm-green-dark text-white">
-          <Link to="/products">Return to Products</Link>
+          <Link to="/products">返回产品列表</Link>
         </Button>
       </div>
     );
@@ -335,11 +336,11 @@ const ProductDetail = () => {
   
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Breadcrumbs */}
+      {/* 面包屑导航 */}
       <div className="mb-6 flex items-center text-sm text-gray-500">
-        <Link to="/" className="hover:text-farm-green">Home</Link>
+        <Link to="/" className="hover:text-farm-green">首页</Link>
         <ChevronRight size={16} className="mx-2" />
-        <Link to="/products" className="hover:text-farm-green">Products</Link>
+        <Link to="/products" className="hover:text-farm-green">产品</Link>
         <ChevronRight size={16} className="mx-2" />
         <Link to={`/category/${product.category}`} className="hover:text-farm-green capitalize">
           {product.category}
@@ -349,7 +350,7 @@ const ProductDetail = () => {
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Product Image */}
+        {/* 产品图片 */}
         <div className="bg-white rounded-lg overflow-hidden shadow-md">
           <img 
             src={product.image} 
@@ -358,11 +359,11 @@ const ProductDetail = () => {
           />
         </div>
         
-        {/* Product Details */}
+        {/* 产品详情 */}
         <div>
           <div className="mb-6">
             {product.isOrganic && (
-              <Badge className="bg-farm-green text-white border-none mb-2">Organic</Badge>
+              <Badge className="bg-farm-green text-white border-none mb-2">有机</Badge>
             )}
             <h1 className="text-3xl font-bold text-gray-800 mb-2">{product.name}</h1>
             <div className="flex items-center mb-4">
@@ -388,7 +389,7 @@ const ProductDetail = () => {
             </div>
             
             <div className="text-2xl font-bold text-farm-green mb-4">
-              ${product.price.toFixed(2)}<span className="text-sm text-gray-500 font-normal">/{product.unit}</span>
+              ¥{product.price.toFixed(2)}<span className="text-sm text-gray-500 font-normal">/{product.unit}</span>
             </div>
           </div>
           
@@ -430,7 +431,7 @@ const ProductDetail = () => {
           <div className="bg-farm-cream-light rounded-lg p-4 mb-6">
             <div className="flex items-start space-x-3 mb-2">
               <Truck size={18} className="text-farm-green mt-0.5" />
-              <span className="text-gray-700">订单满$35免运费</span>
+              <span className="text-gray-700">订单满¥35免运费</span>
             </div>
             <div className="flex items-start space-x-3 mb-2">
               <LeafyGreen size={18} className="text-farm-green mt-0.5" />
@@ -621,7 +622,7 @@ const ProductDetail = () => {
         </Tabs>
       </div>
       
-      {/* Related Products Section */}
+      {/* 相关产品部分 */}
       <div className="mt-16">
         <h2 className="text-2xl font-bold text-farm-brown mb-6">您可能也喜欢</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">

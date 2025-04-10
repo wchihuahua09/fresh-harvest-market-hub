@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { 
@@ -43,6 +43,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/hooks/use-toast";
 
 const ProductManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -50,6 +51,9 @@ const ProductManagement = () => {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputEditRef = useRef<HTMLInputElement>(null);
 
   // 模拟数据
   const products = [
@@ -119,19 +123,52 @@ const ProductManagement = () => {
     return matchesSearch && matchesCategory;
   });
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // 在真实环境中，这里会上传文件到服务器，并获取URL
+      // 这里我们模拟这个过程，使用本地URL
+      const imageUrl = URL.createObjectURL(file);
+      setSelectedImage(imageUrl);
+      toast({
+        title: "图片已上传",
+        description: `文件 ${file.name} 已成功上传`,
+      });
+    }
+  };
+
   const handleAddProduct = () => {
     // 添加产品的逻辑
     setShowAddDialog(false);
+    setSelectedImage(null);
+    toast({
+      title: "产品已添加",
+      description: "新产品已成功添加到系统",
+    });
   };
 
   const handleEditProduct = () => {
     // 编辑产品的逻辑
     setShowEditDialog(false);
+    setSelectedImage(null);
+    toast({
+      title: "产品已更新",
+      description: "产品信息已成功更新",
+    });
   };
 
   const openEditDialog = (product: any) => {
     setSelectedProduct(product);
+    setSelectedImage(product.image);
     setShowEditDialog(true);
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  const triggerEditFileInput = () => {
+    fileInputEditRef.current?.click();
   };
 
   return (
@@ -287,11 +324,41 @@ const ProductManagement = () => {
                 <label className="block text-sm font-medium mb-1">产品描述</label>
                 <Textarea placeholder="描述产品的特点和优势..." />
               </div>
-              <div className="col-span-2 flex items-center space-x-2">
-                <Button variant="outline" className="w-full">
-                  <ImagePlus className="h-4 w-4 mr-2" />
-                  上传图片
-                </Button>
+              <div className="col-span-2">
+                <label className="block text-sm font-medium mb-1">产品图片</label>
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  className="hidden"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                />
+                {selectedImage ? (
+                  <div className="flex items-center space-x-2">
+                    <img 
+                      src={selectedImage} 
+                      alt="产品预览" 
+                      className="w-16 h-16 object-cover rounded" 
+                    />
+                    <Button 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={triggerFileInput}
+                    >
+                      <ImagePlus className="h-4 w-4 mr-2" />
+                      更换图片
+                    </Button>
+                  </div>
+                ) : (
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={triggerFileInput}
+                  >
+                    <ImagePlus className="h-4 w-4 mr-2" />
+                    上传图片
+                  </Button>
+                )}
               </div>
               <div className="flex items-center space-x-2">
                 <label className="flex items-center space-x-2 cursor-pointer">
@@ -308,7 +375,10 @@ const ProductManagement = () => {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddDialog(false)}>取消</Button>
+            <Button variant="outline" onClick={() => {
+              setShowAddDialog(false);
+              setSelectedImage(null);
+            }}>取消</Button>
             <Button onClick={handleAddProduct} className="bg-farm-green hover:bg-farm-green-dark">添加产品</Button>
           </DialogFooter>
         </DialogContent>
@@ -359,14 +429,30 @@ const ProductManagement = () => {
                   <label className="block text-sm font-medium mb-1">产品描述</label>
                   <Textarea placeholder="描述产品的特点和优势..." />
                 </div>
-                <div className="col-span-2 flex items-center space-x-2">
-                  <div className="flex-shrink-0">
-                    <img src={selectedProduct.image} alt={selectedProduct.name} className="w-16 h-16 object-cover rounded" />
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium mb-1">产品图片</label>
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    className="hidden"
+                    ref={fileInputEditRef}
+                    onChange={handleFileChange}
+                  />
+                  <div className="flex items-center space-x-2">
+                    <img 
+                      src={selectedImage || selectedProduct.image} 
+                      alt={selectedProduct.name}
+                      className="w-16 h-16 object-cover rounded" 
+                    />
+                    <Button 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={triggerEditFileInput}
+                    >
+                      <ImagePlus className="h-4 w-4 mr-2" />
+                      更换图片
+                    </Button>
                   </div>
-                  <Button variant="outline" className="flex-1">
-                    <ImagePlus className="h-4 w-4 mr-2" />
-                    更换图片
-                  </Button>
                 </div>
                 <div className="flex items-center space-x-2">
                   <label className="flex items-center space-x-2 cursor-pointer">
@@ -384,7 +470,10 @@ const ProductManagement = () => {
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowEditDialog(false)}>取消</Button>
+            <Button variant="outline" onClick={() => {
+              setShowEditDialog(false);
+              setSelectedImage(null);
+            }}>取消</Button>
             <Button onClick={handleEditProduct} className="bg-farm-green hover:bg-farm-green-dark">保存更改</Button>
           </DialogFooter>
         </DialogContent>
