@@ -24,8 +24,17 @@ interface AuthContextType {
   login: (username: string, password: string, role: UserRole) => Promise<boolean>;
   logout: () => void;
   hasRole: (roles: UserRole | UserRole[]) => boolean;
-  register: (username: string, password: string, email: string) => Promise<boolean>;
+  register: (username: string, password: string, email: string, role?: UserRole, shopDetails?: ShopDetails) => Promise<boolean>;
   updateProfile: (profileData: Partial<User>) => Promise<boolean>;
+}
+
+// 定义商店信息类型
+export interface ShopDetails {
+  name: string;
+  location: string;
+  description?: string;
+  contactPhone?: string;
+  contactEmail?: string;
 }
 
 // 创建认证上下文
@@ -38,10 +47,27 @@ const MOCK_USERS = [
   { id: "3", username: "shop", password: "password", role: "shop" as UserRole, avatar: "/placeholder.svg", email: "shop@example.com", phone: "13700137000", address: "广州市天河区" },
 ];
 
+// 模拟商店数据
+const MOCK_SHOPS = [
+  { 
+    id: 1, 
+    userId: "3",
+    name: "绿色有机农场", 
+    owner: "shop", 
+    products: 24, 
+    status: "active", 
+    location: "北京市朝阳区", 
+    description: "提供新鲜有机蔬菜的农场",
+    contactPhone: "13800138000",
+    contactEmail: "farm1@example.com"
+  }
+];
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState(MOCK_USERS);
+  const [shops, setShops] = useState(MOCK_SHOPS);
 
   // 检查本地存储的用户会话
   useEffect(() => {
@@ -98,7 +124,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (username: string, password: string, email: string): Promise<boolean> => {
+  const register = async (
+    username: string, 
+    password: string, 
+    email: string, 
+    role: UserRole = "user", 
+    shopDetails?: ShopDetails
+  ): Promise<boolean> => {
     // 检查用户名是否已存在
     if (users.some(u => u.username === username)) {
       toast({
@@ -119,31 +151,59 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return false;
     }
     
-    // 创建新用户 - 修复：添加缺少的 phone 和 address 字段
+    // 创建新用户
+    const newUserId = (users.length + 1).toString();
     const newUser = {
-      id: (users.length + 1).toString(),
+      id: newUserId,
       username,
       password,
       email,
-      role: "user" as UserRole,
+      role,
       avatar: "/placeholder.svg",
-      phone: "", // 添加空的电话字段
-      address: "", // 添加空的地址字段
+      phone: "", 
+      address: "", 
     };
     
     // 更新用户列表
     const updatedUsers = [...users, newUser];
     setUsers(updatedUsers);
     
-    // 自动登录
-    const { password: _, ...safeUser } = newUser;
-    setUser(safeUser as User);
-    localStorage.setItem("user", JSON.stringify(safeUser));
+    // 如果是商店注册，创建商店信息
+    if (role === "shop" && shopDetails) {
+      const newShopId = shops.length > 0 ? Math.max(...shops.map(shop => shop.id)) + 1 : 1;
+      const newShop = {
+        id: newShopId,
+        userId: newUserId,
+        name: shopDetails.name,
+        owner: username,
+        products: 0,
+        status: "pending", // 新商店需要管理员审核
+        location: shopDetails.location,
+        description: shopDetails.description || "",
+        contactPhone: shopDetails.contactPhone || "",
+        contactEmail: shopDetails.contactEmail || email
+      };
+      
+      setShops([...shops, newShop]);
+      
+      toast({
+        title: "商店注册成功",
+        description: "您的商店信息已提交，等待管理员审核",
+      });
+    }
     
-    toast({
-      title: "注册成功",
-      description: `欢迎，${username}!`,
-    });
+    // 自动登录普通用户，商店用户需要等待审核
+    if (role === "user") {
+      const { password: _, ...safeUser } = newUser;
+      setUser(safeUser as User);
+      localStorage.setItem("user", JSON.stringify(safeUser));
+      
+      toast({
+        title: "注册成功",
+        description: `欢迎，${username}!`,
+      });
+    }
+    
     return true;
   };
 
