@@ -1,12 +1,16 @@
+
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { ShoppingCart, Search, Menu, X, User, Heart } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ShoppingCart, Search, Menu, X, User, Heart, LogIn, LogOut, Shield, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const { user, isAuthenticated, logout, hasRole } = useAuth();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -19,6 +23,25 @@ const Navbar = () => {
     { name: "谷物", path: "/category/grains" },
     { name: "草药", path: "/category/herbs" },
   ];
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
+  // 根据用户角色获取控制台链接
+  const getDashboardLink = () => {
+    if (hasRole("admin")) return "/admin";
+    if (hasRole("shop")) return "/shop";
+    return "/account";
+  };
+
+  // 根据用户角色获取图标
+  const getDashboardIcon = () => {
+    if (hasRole("admin")) return <Shield size={20} />;
+    if (hasRole("shop")) return <Store size={20} />;
+    return <User size={20} />;
+  };
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
@@ -50,9 +73,25 @@ const Navbar = () => {
             <Link to="/favorites" className="text-gray-700 hover:text-farm-green">
               <Heart size={20} />
             </Link>
-            <Link to="/account" className="text-gray-700 hover:text-farm-green">
-              <User size={20} />
-            </Link>
+            
+            {isAuthenticated ? (
+              <>
+                <Link to={getDashboardLink()} className="text-gray-700 hover:text-farm-green">
+                  {getDashboardIcon()}
+                </Link>
+                <button 
+                  onClick={handleLogout} 
+                  className="text-gray-700 hover:text-farm-green"
+                >
+                  <LogOut size={20} />
+                </button>
+              </>
+            ) : (
+              <Link to="/login" className="text-gray-700 hover:text-farm-green">
+                <LogIn size={20} />
+              </Link>
+            )}
+            
             <Link to="/cart" className="relative">
               <ShoppingCart size={20} className="text-farm-green" />
               {cartCount > 0 && (
@@ -145,13 +184,36 @@ const Navbar = () => {
               >
                 联系
               </Link>
-              <Link
-                to="/account"
-                className="block py-2 text-lg font-medium"
-                onClick={toggleMenu}
-              >
-                账户
-              </Link>
+              
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    to={getDashboardLink()}
+                    className="block py-2 text-lg font-medium"
+                    onClick={toggleMenu}
+                  >
+                    {user?.role === "admin" ? "管理控制台" : (user?.role === "shop" ? "商店管理" : "账户")}
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      toggleMenu();
+                    }}
+                    className="block py-2 text-lg font-medium w-full text-left"
+                  >
+                    登出
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  className="block py-2 text-lg font-medium"
+                  onClick={toggleMenu}
+                >
+                  登录
+                </Link>
+              )}
+              
               <Link
                 to="/favorites"
                 className="block py-2 text-lg font-medium"
