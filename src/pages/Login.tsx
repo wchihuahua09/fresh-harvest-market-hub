@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate, Link } from "react-router-dom";
 import { useAuth, UserRole } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -136,6 +136,12 @@ const Login = () => {
             <p>测试账户:</p>
             <p>用户名: user / admin / shop</p>
             <p>密码: password</p>
+          </div>
+          <div className="w-full text-center">
+            <span className="text-sm">没有账号？</span>
+            <Link to="/register" className="text-farm-green hover:underline text-sm ml-1">
+              立即注册
+            </Link>
           </div>
         </CardFooter>
       </Card>

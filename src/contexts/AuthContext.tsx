@@ -11,6 +11,10 @@ export interface User {
   username: string;
   role: UserRole;
   avatar?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  bio?: string;
 }
 
 // 定义认证上下文的状态和方法
@@ -20,6 +24,8 @@ interface AuthContextType {
   login: (username: string, password: string, role: UserRole) => Promise<boolean>;
   logout: () => void;
   hasRole: (roles: UserRole | UserRole[]) => boolean;
+  register: (username: string, password: string, email: string) => Promise<boolean>;
+  updateProfile: (profileData: Partial<User>) => Promise<boolean>;
 }
 
 // 创建认证上下文
@@ -27,14 +33,15 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // 模拟用户数据
 const MOCK_USERS = [
-  { id: "1", username: "user", password: "password", role: "user" as UserRole, avatar: "/placeholder.svg" },
-  { id: "2", username: "admin", password: "password", role: "admin" as UserRole, avatar: "/placeholder.svg" },
-  { id: "3", username: "shop", password: "password", role: "shop" as UserRole, avatar: "/placeholder.svg" },
+  { id: "1", username: "user", password: "password", role: "user" as UserRole, avatar: "/placeholder.svg", email: "user@example.com", phone: "13800138000", address: "北京市海淀区" },
+  { id: "2", username: "admin", password: "password", role: "admin" as UserRole, avatar: "/placeholder.svg", email: "admin@example.com", phone: "13900139000", address: "上海市浦东新区" },
+  { id: "3", username: "shop", password: "password", role: "shop" as UserRole, avatar: "/placeholder.svg", email: "shop@example.com", phone: "13700137000", address: "广州市天河区" },
 ];
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState(MOCK_USERS);
 
   // 检查本地存储的用户会话
   useEffect(() => {
@@ -54,7 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await new Promise(resolve => setTimeout(resolve, 500));
     
     // 在模拟用户中查找匹配的用户
-    const foundUser = MOCK_USERS.find(
+    const foundUser = users.find(
       u => u.username === username && u.password === password
     );
     
@@ -91,6 +98,81 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const register = async (username: string, password: string, email: string): Promise<boolean> => {
+    // 检查用户名是否已存在
+    if (users.some(u => u.username === username)) {
+      toast({
+        title: "注册失败",
+        description: "用户名已存在",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
+    // 检查邮箱是否已存在
+    if (users.some(u => u.email === email)) {
+      toast({
+        title: "注册失败",
+        description: "邮箱已被使用",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
+    // 创建新用户
+    const newUser = {
+      id: (users.length + 1).toString(),
+      username,
+      password,
+      email,
+      role: "user" as UserRole,
+      avatar: "/placeholder.svg",
+    };
+    
+    // 更新用户列表
+    const updatedUsers = [...users, newUser];
+    setUsers(updatedUsers);
+    
+    // 自动登录
+    const { password: _, ...safeUser } = newUser;
+    setUser(safeUser as User);
+    localStorage.setItem("user", JSON.stringify(safeUser));
+    
+    toast({
+      title: "注册成功",
+      description: `欢迎，${username}!`,
+    });
+    return true;
+  };
+
+  const updateProfile = async (profileData: Partial<User>): Promise<boolean> => {
+    if (!user) {
+      toast({
+        title: "更新失败",
+        description: "您需要先登录",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
+    // 更新用户数据
+    const updatedUser = { ...user, ...profileData };
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    
+    // 同时更新模拟用户列表中的用户数据
+    const updatedUsers = users.map(u => 
+      u.id === user.id ? { ...u, ...profileData, password: u.password } : u
+    );
+    setUsers(updatedUsers);
+    
+    toast({
+      title: "更新成功",
+      description: "个人资料已更新",
+    });
+    return true;
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
@@ -119,6 +201,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         logout,
         hasRole,
+        register,
+        updateProfile,
       }}
     >
       {!loading && children}

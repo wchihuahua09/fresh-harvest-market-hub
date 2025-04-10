@@ -1,7 +1,20 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, Search, Menu, X, User, Heart, LogIn, LogOut, Shield, Store } from "lucide-react";
+import { 
+  ShoppingCart, 
+  Search, 
+  Menu, 
+  X, 
+  User, 
+  Heart, 
+  LogIn, 
+  LogOut, 
+  Shield, 
+  Store,
+  Newspaper,
+  Home
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
@@ -33,7 +46,7 @@ const Navbar = () => {
   const getDashboardLink = () => {
     if (hasRole("admin")) return "/admin";
     if (hasRole("shop")) return "/shop";
-    return "/account";
+    return "/profile";
   };
 
   // 根据用户角色获取图标
@@ -61,14 +74,14 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-6">
+            <Link to="/" className="text-gray-700 hover:text-farm-green flex items-center">
+              <Home size={20} className="mr-1" /> 首页
+            </Link>
             <Link to="/products" className="text-gray-700 hover:text-farm-green">
               产品
             </Link>
-            <Link to="/about" className="text-gray-700 hover:text-farm-green">
-              关于
-            </Link>
-            <Link to="/contact" className="text-gray-700 hover:text-farm-green">
-              联系
+            <Link to="/news" className="text-gray-700 hover:text-farm-green flex items-center">
+              <Newspaper size={20} className="mr-1" /> 资讯
             </Link>
             <Link to="/favorites" className="text-gray-700 hover:text-farm-green">
               <Heart size={20} />
@@ -152,6 +165,13 @@ const Navbar = () => {
             </div>
             <div className="space-y-4">
               <Link
+                to="/"
+                className="block py-2 text-lg font-medium flex items-center"
+                onClick={toggleMenu}
+              >
+                <Home size={18} className="mr-2" /> 首页
+              </Link>
+              <Link
                 to="/products"
                 className="block py-2 text-lg font-medium"
                 onClick={toggleMenu}
@@ -171,18 +191,11 @@ const Navbar = () => {
                 ))}
               </div>
               <Link
-                to="/about"
-                className="block py-2 text-lg font-medium"
+                to="/news"
+                className="block py-2 text-lg font-medium flex items-center"
                 onClick={toggleMenu}
               >
-                关于
-              </Link>
-              <Link
-                to="/contact"
-                className="block py-2 text-lg font-medium"
-                onClick={toggleMenu}
-              >
-                联系
+                <Newspaper size={18} className="mr-2" /> 资讯
               </Link>
               
               {isAuthenticated ? (
@@ -192,7 +205,7 @@ const Navbar = () => {
                     className="block py-2 text-lg font-medium"
                     onClick={toggleMenu}
                   >
-                    {user?.role === "admin" ? "管理控制台" : (user?.role === "shop" ? "商店管理" : "账户")}
+                    {user?.role === "admin" ? "管理控制台" : (user?.role === "shop" ? "商店管理" : "个人中心")}
                   </Link>
                   <button
                     onClick={() => {
@@ -205,13 +218,22 @@ const Navbar = () => {
                   </button>
                 </>
               ) : (
-                <Link
-                  to="/login"
-                  className="block py-2 text-lg font-medium"
-                  onClick={toggleMenu}
-                >
-                  登录
-                </Link>
+                <>
+                  <Link
+                    to="/login"
+                    className="block py-2 text-lg font-medium"
+                    onClick={toggleMenu}
+                  >
+                    登录
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="block py-2 text-lg font-medium"
+                    onClick={toggleMenu}
+                  >
+                    注册
+                  </Link>
+                </>
               )}
               
               <Link

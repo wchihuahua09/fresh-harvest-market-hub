@@ -9,6 +9,9 @@ import NotFound from "./pages/NotFound";
 import ProductListing from "./pages/ProductListing";
 import ProductDetail from "./pages/ProductDetail";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Profile from "./pages/Profile";
+import { NewsList, NewsDetail } from "./pages/News";
 import Admin from "./pages/Admin";
 import Shop from "./pages/Shop";
 import Navbar from "./components/layout/Navbar";
@@ -34,6 +37,17 @@ const App = () => (
                 <Route path="/category/:category" element={<ProductListing />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route 
+                  path="/profile" 
+                  element={
+                    <ProtectedRoute>
+                      <Profile />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route path="/news" element={<NewsList />} />
+                <Route path="/news/:id" element={<NewsDetail />} />
                 <Route 
                   path="/admin" 
                   element={
