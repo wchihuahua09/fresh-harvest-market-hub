@@ -273,12 +273,14 @@ const Orders = () => {
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
-                      <img 
-                        src={order.shop.avatar} 
-                        alt={order.shop.name} 
-                        className="h-6 w-6 mr-2 rounded-full" 
-                      />
-                      <CardTitle className="text-base">{order.shop.name}</CardTitle>
+                      {order.shop && order.shop.avatar && (
+                        <img 
+                          src={order.shop.avatar} 
+                          alt={order.shop?.name || "商家"} 
+                          className="h-6 w-6 mr-2 rounded-full" 
+                        />
+                      )}
+                      <CardTitle className="text-base">{order.shop?.name || "商家名称"}</CardTitle>
                     </div>
                     <Badge className={color}>
                       <div className="flex items-center">
@@ -356,13 +358,15 @@ const Orders = () => {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center">
-                    <img 
-                      src={selectedOrder.shop.avatar} 
-                      alt={selectedOrder.shop.name} 
-                      className="h-8 w-8 mr-2 rounded-full" 
-                    />
+                    {selectedOrder.shop && selectedOrder.shop.avatar && (
+                      <img 
+                        src={selectedOrder.shop.avatar} 
+                        alt={selectedOrder.shop?.name || "商家"} 
+                        className="h-8 w-8 mr-2 rounded-full" 
+                      />
+                    )}
                     <div>
-                      <p className="font-medium">{selectedOrder.shop.name}</p>
+                      <p className="font-medium">{selectedOrder.shop?.name || "商家名称"}</p>
                       <Button variant="link" size="sm" className="h-auto p-0 text-farm-green">
                         联系卖家
                       </Button>
