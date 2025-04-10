@@ -18,11 +18,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
   const { user, isAuthenticated, logout, hasRole } = useAuth();
+  const { getCartCount } = useCart();
+  const cartCount = getCartCount();
   const navigate = useNavigate();
 
   const toggleMenu = () => {

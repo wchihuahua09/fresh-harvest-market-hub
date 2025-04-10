@@ -1,9 +1,10 @@
 
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/contexts/CartContext";
+import { toast } from "@/hooks/use-toast";
 
 interface ProductCardProps {
   id: number;
@@ -14,6 +15,7 @@ interface ProductCardProps {
   isFeatured?: boolean;
   isOrganic?: boolean;
   farmer: {
+    id?: number;
     name: string;
     location: string;
   };
@@ -29,19 +31,49 @@ const ProductCard = ({
   isOrganic = false,
   farmer,
 }: ProductCardProps) => {
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { addToCart, toggleFavorite, isFavorite } = useCart();
+  const favorited = isFavorite(id);
 
-  const toggleFavorite = (e: React.MouseEvent) => {
+  const handleToggleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsFavorite(!isFavorite);
+    
+    toggleFavorite({
+      id,
+      name,
+      image,
+      price,
+      unit,
+      farmerId: farmer.id || 0,
+      farmerName: farmer.name,
+      farmerLocation: farmer.location,
+      isOrganic
+    });
+    
+    toast({
+      title: favorited ? "已从收藏中移除" : "已添加到收藏",
+      description: `${name} ${favorited ? "已从收藏中移除" : "已添加到您的收藏列表"}`,
+    });
   };
 
-  const addToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(`Added ${name} to cart`);
-    // Implement cart functionality here
+    
+    addToCart({
+      id,
+      name,
+      image,
+      price,
+      unit,
+      farmerId: farmer.id || 0,
+      farmerName: farmer.name,
+    });
+    
+    toast({
+      title: "已添加到购物车",
+      description: `${name} 已添加到您的购物车`,
+    });
   };
 
   return (
@@ -55,12 +87,12 @@ const ProductCard = ({
           />
           <div className="absolute top-2 right-2 flex flex-col gap-2">
             <button
-              onClick={toggleFavorite}
+              onClick={handleToggleFavorite}
               className="bg-white p-1.5 rounded-full shadow-md hover:bg-gray-100"
             >
               <Heart
                 size={16}
-                className={isFavorite ? "fill-red-500 text-red-500" : "text-gray-500"}
+                className={favorited ? "fill-red-500 text-red-500" : "text-gray-500"}
               />
             </button>
           </div>
@@ -85,7 +117,7 @@ const ProductCard = ({
           </div>
           <div className="mt-4">
             <Button
-              onClick={addToCart}
+              onClick={handleAddToCart}
               className="w-full bg-farm-green hover:bg-farm-green-dark text-white"
             >
               <ShoppingCart size={16} className="mr-2" />

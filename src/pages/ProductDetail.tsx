@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -23,6 +22,7 @@ import ProductCard from "@/components/products/ProductCard";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
 import { toast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -186,8 +186,8 @@ const RatingSelector = ({ value, onChange }: { value: number, onChange: (value: 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { isAuthenticated, user } = useAuth();
+  const { addToCart, toggleFavorite, isFavorite } = useCart();
   const [quantity, setQuantity] = useState(1);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [reviews, setReviews] = useState(mockReviews);
   const [activeTab, setActiveTab] = useState("details");
   const [newReview, setNewReview] = useState({
@@ -199,6 +199,7 @@ const ProductDetail = () => {
   // In a real app, you would fetch the product data based on the ID
   // For now, we'll use the sample data
   const product = productData;
+  const favorited = isFavorite(product.id);
   
   const incrementQuantity = () => {
     setQuantity(quantity + 1);
@@ -210,28 +211,40 @@ const ProductDetail = () => {
     }
   };
   
-  const addToCart = () => {
-    console.log(`Added ${quantity} ${product.name} to cart`);
+  const handleAddToCart = () => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      image: product.image,
+      price: product.price,
+      unit: product.unit,
+      farmerId: product.farmer.id,
+      farmerName: product.farmer.name,
+    }, quantity);
+    
     toast({
       title: "已添加到购物车",
       description: `${quantity} x ${product.name}`,
     });
-    // Implement cart functionality here
   };
   
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-    if (!isFavorite) {
-      toast({
-        title: "已添加到收藏",
-        description: `${product.name} 已添加到您的收藏列表`,
-      });
-    } else {
-      toast({
-        title: "已从收藏中移除",
-        description: `${product.name} 已从您的收藏列表中移除`,
-      });
-    }
+  const handleToggleFavorite = () => {
+    toggleFavorite({
+      id: product.id,
+      name: product.name,
+      image: product.image,
+      price: product.price,
+      unit: product.unit,
+      farmerId: product.farmer.id,
+      farmerName: product.farmer.name,
+      farmerLocation: product.farmer.location,
+      isOrganic: product.isOrganic
+    });
+    
+    toast({
+      title: favorited ? "已从收藏中移除" : "已添加到收藏",
+      description: `${product.name} ${favorited ? "已从您的收藏列表中移除" : "已添加到您的收藏列表"}`,
+    });
   };
   
   const handleLikeReview = (reviewId: number) => {
@@ -399,7 +412,7 @@ const ProductDetail = () => {
               </button>
             </div>
             <Button 
-              onClick={addToCart}
+              onClick={handleAddToCart}
               className="bg-farm-green hover:bg-farm-green-dark text-white flex-1"
             >
               <ShoppingCart size={18} className="mr-2" />
@@ -407,10 +420,10 @@ const ProductDetail = () => {
             </Button>
             <Button 
               variant="outline" 
-              className={`p-2 ${isFavorite ? 'border-red-500 text-red-500' : 'border-gray-200 text-gray-500'}`}
-              onClick={toggleFavorite}
+              className={`p-2 ${favorited ? 'border-red-500 text-red-500' : 'border-gray-200 text-gray-500'}`}
+              onClick={handleToggleFavorite}
             >
-              <Heart size={18} className={isFavorite ? 'fill-red-500 text-red-500' : ''} />
+              <Heart size={18} className={favorited ? 'fill-red-500 text-red-500' : ''} />
             </Button>
           </div>
           
