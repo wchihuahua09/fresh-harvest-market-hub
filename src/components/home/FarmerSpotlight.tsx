@@ -1,4 +1,6 @@
 
+import { Separator } from "@/components/ui/separator";
+
 const farmers = [
   {
     id: 1,

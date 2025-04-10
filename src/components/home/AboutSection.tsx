@@ -1,4 +1,8 @@
 
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Leaf, Truck, Users, ShieldCheck } from "lucide-react";
+
 const features = [
   {
     icon: <Leaf className="h-10 w-10 text-farm-green" />,
