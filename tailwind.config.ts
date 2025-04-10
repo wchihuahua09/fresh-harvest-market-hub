@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,25 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Farm fresh theme colors
+				farm: {
+					green: {
+						light: '#65A30D',
+						DEFAULT: '#4D7C0F',
+						dark: '#3F6212',
+					},
+					brown: {
+						light: '#B45309',
+						DEFAULT: '#92400E',
+						dark: '#78350F',
+					},
+					cream: {
+						light: '#FFFBEB',
+						DEFAULT: '#FEFCE8',
+						dark: '#FEF9C3',
+					},
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
